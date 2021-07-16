@@ -19,7 +19,7 @@ app.post("/register", function(req , res){
     var name = req.body.uname;
     var password = req.body.password;
     var mobile = req.body.mobile;
-    var sql = "insert into emp(name , password, mobile) values('"+name+"', '"+password+"', '"+mobile+"')";
+    var sql = "insert into users(name , password, mobile) values('"+name+"', '"+password+"', '"+mobile+"')";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
         res.send("User Details Received Successfully !");
