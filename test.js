@@ -7,10 +7,10 @@ app.use(cors())
 //  MySQL Connection
 const mysql = require("mysql");
 const mydatabase = mysql.createConnection({
-  host :    'localhost',
-  user:     'root',
-  password : '',
-  database :  'project1'
+  host :    'sql104.epizy.com',
+  user:     'epiz_28888471',
+  password : 'o4guduIUtZ4E',
+  database :  'epiz_28888471_Naveen'
 });
 mydatabase.connect(); 
 
@@ -27,29 +27,11 @@ app.post("/register", function(req , res){
         res.end();
     })
 });
-app.post("/login", function(req , res){
-    var password = req.body.password;
-    var email = req.body.email;
-	
-    var sql = "select * from users where email='" +email+ "' and password='" +password+ "'";
-    mydatabase.query( sql , function(error , rows, fields){
-        if(error) throw error
-		if(rows.length > 0){
-			res.send(rows);
-			res.end();
-		}else{
-			res.send({"id":""});
-			res.end();
-		}
-       
-    })
-});
-
 
 
 app.get("/userlist", function(req,res){
     var id = req.body.id;
-    mydatabase.query('select * from users order by id desc' , function(error, rows, fields){
+    mydatabase.query('select * from student order by id desc' , function(error, rows, fields){
         if(error) throw error
         res.send(JSON.stringify(rows));
         res.end();
