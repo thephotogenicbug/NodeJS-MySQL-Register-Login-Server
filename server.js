@@ -45,16 +45,23 @@ app.post("/login", function(req , res){
     })
 });
 
-
-
-app.get("/userlist", function(req,res){
-    var id = req.body.id;
-    mydatabase.query('select * from users order by id desc' , function(error, rows, fields){
+app.get("/products", function(req , res){
+    var sql = "select * from product order by pid desc";
+    mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
-        res.send(JSON.stringify(rows));
-        res.end();
+			res.send(rows);
+			res.end();
     })
-})
+});
+
+// app.get("/userlist", function(req,res){
+//     var id = req.body.id;
+//     mydatabase.query('select * from users order by id desc' , function(error, rows, fields){
+//         if(error) throw error
+//         res.send(JSON.stringify(rows));
+//         res.end();
+//     })
+// })
 
 app.listen(2222, function(){
     console.log("Server is Running on port 2222")
