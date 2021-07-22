@@ -32,7 +32,6 @@ app.post("/register", function(req , res){
 app.post("/login", function(req , res){
     var password = req.body.password;
     var email = req.body.email;
-	
     var sql = "select * from users where email='" +email+ "' and password='" +password+ "'";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
@@ -58,16 +57,30 @@ app.get("/product", function(req , res){
     })
 });
 
-// post product details
-app.post("/saveproduct", function(req , res){
-    var name = req.body.pname;
-    var price = req.body.pprice;
-    var qty = req.body.pqty;
-    var details = req.body.pdetails;
-    var sql = "insert into product(name, price, qty, details) values('"+name+"', '"+price+"', '"+qty+"', '"+details+"')";
+
+// based on vendor id display product
+app.post("/vendorproduct", function(req , res){
+    var vid   = req.body.vid;
+    var sql = "select * from product where vendor='"+vid+"' order by pid desc";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
-        res.send("Product Save Successfully!");
+			res.send(rows);
+			res.end();
+    })
+});
+
+// post product details
+app.post("/saveproduct", function(req , res){
+    var name      = req.body.pname;
+    var price     = req.body.pprice;
+    var qty       = req.body.pqty;
+    var details   = req.body.pdetails;
+    var vid       = req.body.vid;
+    // var pic       = req.body.pic
+    var sql = "insert into product(vendor, name, price, qty, details) values('"+vid+"', '"+name+"', '"+price+"', '"+qty+"', '"+details+"')";
+    mydatabase.query( sql , function(error , rows, fields){
+        if(error) throw error
+        res.send("Product Saved Successfully!");
         res.end();
     })
 });
