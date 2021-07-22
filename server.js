@@ -17,21 +17,23 @@ mydatabase.connect();
 //  post Method
 app.post("/register", function(req , res){
     var name = req.body.uname;
-    var email = req.body.email
     var password = req.body.password;
     var mobile = req.body.mobile;
-    var sql = "insert into users(name, email, password, mobile) values('"+name+"', '"+email+"', '"+password+"', '"+mobile+"')";
+    var email = req.body.email;
+    var sql = "insert into user(name, password, mobile, email) values('"+name+"', '"+password+"', '"+mobile+"', '"+email+"')";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
         res.send("Registration Successfull !");
         res.end();
     })
 });
+
+// login with validation
 app.post("/login", function(req , res){
     var password = req.body.password;
     var email = req.body.email;
 	
-    var sql = "select * from users where email='" +email+ "' and password='" +password+ "'";
+    var sql = "select * from user where email='" +email+ "' and password='" +password+ "'";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
 		if(rows.length > 0){
@@ -45,7 +47,9 @@ app.post("/login", function(req , res){
     })
 });
 
-app.get("/products", function(req , res){
+
+// get product list
+app.get("/product", function(req , res){
     var sql = "select * from product order by pid desc";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
@@ -54,14 +58,20 @@ app.get("/products", function(req , res){
     })
 });
 
-// app.get("/userlist", function(req,res){
-//     var id = req.body.id;
-//     mydatabase.query('select * from users order by id desc' , function(error, rows, fields){
-//         if(error) throw error
-//         res.send(JSON.stringify(rows));
-//         res.end();
-//     })
-// })
+// post product details
+app.post("/saveproduct", function(req , res){
+    var name = req.body.pname;
+    var price = req.body.pprice;
+    var qty = req.body.pqty;
+    var details = req.body.pdetails;
+    var sql = "insert into product(name, price, qty, details) values('"+name+"', '"+price+"', '"+qty+"', '"+details+"')";
+    mydatabase.query( sql , function(error , rows, fields){
+        if(error) throw error
+        res.send("Product Save Successfully!");
+        res.end();
+    })
+});
+
 
 app.listen(2222, function(){
     console.log("Server is Running on port 2222")
