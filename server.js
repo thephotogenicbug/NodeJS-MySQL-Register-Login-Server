@@ -20,7 +20,7 @@ app.post("/register", function(req , res){
     var password = req.body.password;
     var mobile = req.body.mobile;
     var email = req.body.email;
-    var sql = "insert into user(name, password, mobile, email) values('"+name+"', '"+password+"', '"+mobile+"', '"+email+"')";
+    var sql = "insert into users(name, password, mobile, email) values('"+name+"', '"+password+"', '"+mobile+"', '"+email+"')";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
         res.send("Registration Successfull !");
@@ -33,7 +33,7 @@ app.post("/login", function(req , res){
     var password = req.body.password;
     var email = req.body.email;
 	
-    var sql = "select * from user where email='" +email+ "' and password='" +password+ "'";
+    var sql = "select * from users where email='" +email+ "' and password='" +password+ "'";
     mydatabase.query( sql , function(error , rows, fields){
         if(error) throw error
 		if(rows.length > 0){
