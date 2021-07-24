@@ -85,6 +85,28 @@ app.post("/saveproduct", function(req , res){
     })
 });
 
+// add to cart
+app.post("/addtocart", function(req , res){
+    var vendor    = req.body.vendor; //on click send vendor id and product id 
+    var pid       = req.body.pid;
+    var sql = "insert into cart(vendor, pid, qty) values('"+vendor+"', '"+pid+"', '1')";
+    mydatabase.query( sql , function(error , rows, fields){
+        if(error) throw error
+        res.send("Item Added in Cart Successfully!");
+        res.end();
+    })
+});
+
+// get cart item
+app.get("/cartitem", function(req , res){
+    var sql = "select product.*, cart.* from cart,product where cart.pid=product.pid order by cartid desc";
+    mydatabase.query( sql , function(error , rows, fields){
+        if(error) throw error
+			res.send(rows);
+			res.end();
+    })
+});
+
 
 app.listen(2222, function(){
     console.log("Server is Running on port 2222")
