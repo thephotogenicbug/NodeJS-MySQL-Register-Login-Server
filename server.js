@@ -14,7 +14,7 @@ const mydatabase = mysql.createConnection({
 });
 mydatabase.connect(); 
 
-//  post Method
+//  vendor register 
 app.post("/register", function(req , res){
     var name = req.body.uname;
     var password = req.body.password;
@@ -28,7 +28,7 @@ app.post("/register", function(req , res){
     })
 });
 
-// login with validation
+// vendor login login with validation
 app.post("/login", function(req , res){
     var password = req.body.password;
     var email = req.body.email;
@@ -58,7 +58,7 @@ app.get("/product", function(req , res){
 });
 
 
-// based on vendor id display product
+// post data to backend by vendor id (fetch function)
 app.post("/vendorproduct", function(req , res){
     var vid   = req.body.vid;
     var sql = "select * from product where vendor='"+vid+"' order by pid desc";
@@ -69,7 +69,7 @@ app.post("/vendorproduct", function(req , res){
     })
 });
 
-// post product details
+// post data by vendor
 app.post("/saveproduct", function(req , res){
     var name      = req.body.pname;
     var price     = req.body.pprice;
@@ -97,7 +97,7 @@ app.post("/addtocart", function(req , res){
     })
 });
 
-// get cart item
+// get cart item for customer
 app.get("/cartitem", function(req , res){
     var sql = "select product.*, cart.* from cart,product where cart.pid=product.pid order by cartid desc";
     mydatabase.query( sql , function(error , rows, fields){
@@ -107,7 +107,44 @@ app.get("/cartitem", function(req , res){
     })
 });
 
+// place order by customer
+app.post("/placeorder", function(req , res){
+	var cname = req.body.cname;
+	var mobile = req.body.mobile;
+	var address = req.body.address;
+    var sql = "select product.name, product.price, product.photo, product.details, cart.pid, cart.qty, cart.vendor from cart, product where cart.pid=product.pid";
+    mydatabase.query( sql , function(error , rows, fields){
+			rows.map(pdata=>{ // run the for loop function 
+				var sql2 = "insert into myorder(pid , qty, name, price, photo, vendor, details, customername, mobile, address) values('"+pdata.pid+"', '"+pdata.qty+"', '"+pdata.name+"', '"+pdata.price+"', '"+pdata.photo+"', '"+pdata.vendor+"', '"+pdata.details+"', '"+cname+"', '"+mobile+"', '"+address+"')";
+				mydatabase.query(sql2);
+			})               // truncate tableName
+            mydatabase.query("truncate cart") // to clear data from cart after placing the order
+			res.send("Order Placed Successfully !");
+			res.end();
+    })
+});
+
+
+// post data to myorder vendor page 
+app.post("/vendororder", function(req , res){
+    var vid   = req.body.vid;
+    var sql = "select * from myorder where vendor='"+vid+"' order by orderid desc";
+    mydatabase.query( sql , function(error , rows, fields){
+        if(error) throw error
+			res.send(rows);
+			res.end();
+    })
+});
 
 app.listen(2222, function(){
     console.log("Server is Running on port 2222")
 })
+
+  // alter table mysql query
+/*
+   alter table myorder
+   add name    varchar(255),
+   add price   float,
+   add photo   text,
+   add details text
+*/

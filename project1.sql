@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2021 at 05:51 PM
+-- Generation Time: Jul 25, 2021 at 05:45 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -34,21 +34,6 @@ CREATE TABLE `cart` (
   `vendor` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`cartid`, `pid`, `qty`, `vendor`) VALUES
-(1, 12, 1, 24),
-(2, 12, 1, 24),
-(3, 12, 1, 24),
-(4, 12, 1, 24),
-(5, 12, 1, 24),
-(6, 12, 1, 24),
-(7, 12, 1, 24),
-(8, 12, 1, 24),
-(9, 12, 1, 24);
-
 -- --------------------------------------------------------
 
 --
@@ -62,8 +47,20 @@ CREATE TABLE `myorder` (
   `vendor` int(10) DEFAULT NULL,
   `customername` varchar(100) DEFAULT NULL,
   `mobile` bigint(12) DEFAULT NULL,
-  `address` text DEFAULT NULL
+  `address` text DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  `photo` text DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `orderdate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `myorder`
+--
+
+INSERT INTO `myorder` (`orderid`, `pid`, `qty`, `vendor`, `customername`, `mobile`, `address`, `name`, `price`, `photo`, `details`, `orderdate`) VALUES
+(1, 12, 1, 24, 'NaveenKumar', 9008006228, 'Test ', 'Apple', 200, 'https://i.ibb.co/Trwmpk3/apple.jpg', 'Good Quality of Apples ', '2021-07-25 15:34:50');
 
 -- --------------------------------------------------------
 
@@ -86,7 +83,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`pid`, `name`, `price`, `qty`, `details`, `photo`, `vendor`) VALUES
-(12, 'Apple', 200, 50, 'Good Quality of Apples ', 'https://i.ibb.co/Trwmpk3/apple.jpg', 24);
+(12, 'Apple', 200, 50, 'Good Quality of Apples ', 'https://i.ibb.co/Trwmpk3/apple.jpg', 24),
+(13, 'Orange ', 100, 100, 'Good Quality of Oranges', 'https://i.ibb.co/4MR6bnF/fresh-orange-500x500.png', 24);
 
 -- --------------------------------------------------------
 
@@ -108,8 +106,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `mobile`) VALUES
 (23, 'Naveen', 'test@gmail.com', '1234', 9008006228),
-(24, 'NaveenKumar', 'naveen@gmail.com', '12345', 9008006228),
-(25, 'Achari', 'achari@gmail.com', '1234', 9008006221);
+(24, 'NaveenKumar', 'naveen@gmail.com', '12345', 9008006228);
 
 --
 -- Indexes for dumped tables
@@ -147,19 +144,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cartid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cartid` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `myorder`
 --
 ALTER TABLE `myorder`
-  MODIFY `orderid` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `orderid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
